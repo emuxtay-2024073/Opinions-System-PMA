@@ -5,6 +5,7 @@ import { helmetConfig } from './helmet.configuration.js';
 import { rateLimitConfig } from './rateLimit.configuration.js';
 import { connectDB } from './db.configuration.js';
 import authRoutes from '../routes/auth.routes.js';
+import opinionRoutes from '../routes/opinion.routes.js';
 import { handleErrors } from '../middlewares/handle-errors.js';
 import morgan from 'morgan';
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(upload.none());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/opinions', opinionRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
