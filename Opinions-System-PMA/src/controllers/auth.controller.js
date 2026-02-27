@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
+import { config } from '../configs/app.js';
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -8,11 +9,11 @@ const generateToken = (user) => {
       email: user.email,
       role: user.role,
     },
-    process.env.JWT_SECRET,
+    config.jwtSecret,
     {
-      issuer: process.env.JWT_ISSUER,
-      audience: process.env.JWT_AUDIENCE,
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      issuer: config.jwtIssuer,
+      audience: config.jwtAudience,
+      expiresIn: config.jwtExpiresIn,
     }
   );
 };

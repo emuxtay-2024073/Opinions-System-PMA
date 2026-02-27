@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { config } from '../configs/app.js';
 
 export const validateJWT = (req, res, next) => {
   try {
@@ -11,7 +12,7 @@ export const validateJWT = (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, config.jwtSecret);
     req.user = decoded;
     next();
   } catch (error) {

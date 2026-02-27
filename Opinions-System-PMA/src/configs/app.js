@@ -1,3 +1,12 @@
+export const config = {
+  port: 3000,
+  mongoURI: "mongodb://localhost:27017/ops-in6am",
+  jwtSecret: "eZGE7iNE05Kl5naiSp04ts3BUVQ7YcnESGT@IN6AM",
+  jwtIssuer: "Opinion-System",
+  jwtAudience: "Opinion-System-Users",
+  jwtExpiresIn: "1H",
+  nodeTlsRejectUnauthorized: 0
+};
 import express from 'express';
 import multer from 'multer';
 import { corsConfig } from './cors.configuration.js';
@@ -6,10 +15,11 @@ import { rateLimitConfig } from './rateLimit.configuration.js';
 import { connectDB } from './db.configuration.js';
 import authRoutes from '../routes/auth.routes.js';
 import opinionRoutes from '../routes/opinion.routes.js';
+import commentRoutes from '../routes/comment.routes.js';
 import { handleErrors } from '../middlewares/handle-errors.js';
 import morgan from 'morgan';
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.port;
 const BASE_PATH = '/api';
 
 const app = express();
@@ -26,6 +36,7 @@ app.use(upload.none());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/opinions', opinionRoutes);
+app.use('/api/comments', commentRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
@@ -39,7 +50,7 @@ app.use(handleErrors);
 
 export const initServer = async () => {
   try {
-    await connectDB();
+    await connectDB(config.mongoURI);
     app.listen(PORT, () => {
       console.log(`Opinions-System API running on port ${PORT}`);
       console.log(`Health check endpoint: http://localhost:${PORT}${BASE_PATH}/health`);
