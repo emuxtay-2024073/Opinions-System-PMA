@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 
-export const connectDB = async () => {
+export const connectDB = async (uri) => {
   try {
-    const connection = await mongoose.connect(process.env.URI_MONGODB, {
+    const connection = await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     });
-    
     console.log(`MongoDB conectado existosamente: ${connection.connection.host}`);
     return connection;
   } catch (error) {
